@@ -44,41 +44,38 @@ void linked_list_insert_back(LinkedList *list, int value){
 }
 
 int linked_list_find(LinkedList *list, int value){
-    Node *current = list->head;
+    if(list == NULL){
+        return -1;
+    }
 
+    Node *current = list->head;
     int count = 0;
 
     while (current != NULL){
         if(current->value == value){
-            break;
-            
-        }
-        else{
-            current = current->next;
-            count++;
-        }
-        count = -1;
-    }
-
-    return count;
-    
-}
-
-
-int linked_list_get(LinkedList *list, int index){
-    int result = 0;
-    int count = 0;
-    Node *current = list->head;
-    
-    while(count <= index){
-        if(count == index){
             return count;
         }
+
         current = current->next;
         count++;
     }
 
     return -1;
+}
+
+
+int linked_list_get(LinkedList *list, int index){
+    if(list == NULL || index < 0 || index >= list->size){
+        return -1;
+    }
+
+    Node *current = list->head;
+
+    for(int i = 0; i < index; i++){
+        current = current->next;
+    }
+
+    return current->value;
 }
 
 void linked_list_remove_front(LinkedList *list){
@@ -94,6 +91,10 @@ void linked_list_remove_front(LinkedList *list){
 }
 
 void linked_list_free_collection(LinkedList *list) {
+    if(list == NULL){
+        return;
+    }
+
     Node *current = list->head;
 
     while (current != NULL) {
@@ -103,4 +104,7 @@ void linked_list_free_collection(LinkedList *list) {
 
         current = next;
     }
+
+    list->head = NULL;
+    list->size = 0;
 }

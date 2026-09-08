@@ -41,6 +41,7 @@ tp1
 test_dynamic_array
 test_linked_list
 test_hash_table
+benchmark
 
 # Debug files
 *.dSYM/

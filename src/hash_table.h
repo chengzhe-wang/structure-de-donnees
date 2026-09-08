@@ -12,10 +12,15 @@ typedef struct {
     Entry *buckets[TABLE_SIZE];
 } HashTable;
 
+typedef int (*HashFunction)(int value);
+
 void hash_table_init(HashTable *table);
 void hash_insert(HashTable *table, int value);
 int hash_contains(HashTable *table, int value);
 void hash_table_free_collection(HashTable *table);
+
+void hash_insert_with(HashTable *table, int value, HashFunction hash_function);
+int hash_contains_with(HashTable *table, int value, HashFunction hash_function);
 
 int hash_good(int value);
 int hash_bad(int value);

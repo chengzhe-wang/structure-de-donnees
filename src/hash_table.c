@@ -8,36 +8,67 @@ void hash_table_init(HashTable *table){
 }
 
 int hash_good(int id) {
-    return id % TABLE_SIZE;
+    int hash = id % TABLE_SIZE;
+    return hash < 0 ? hash + TABLE_SIZE : hash;
 }
 
 int hash_bad(int id) {
+    (void)id;
     return 0;
 }
 
-void hash_insert(HashTable *table, int value){
-    int hash = hash_good(value);
+void hash_insert_with(HashTable *table, int value, HashFunction hash_function){
+    if(table == NULL || hash_function == NULL){
+        return;
+    }
+
+    int hash = hash_function(value);
+
+    if(hash < 0 || hash >= TABLE_SIZE){
+        return;
+    }
 
     Entry *new_entry = malloc(sizeof(Entry));
+
+    if(new_entry == NULL){
+        return;
+    }
 
     new_entry->value = value;
     new_entry->next = table->buckets[hash];
     table->buckets[hash] = new_entry;
 }
 
-int hash_contains(HashTable *table, int value){
-    int hash = hash_good(value);
+void hash_insert(HashTable *table, int value){
+    hash_insert_with(table, value, hash_good);
+}
 
-    if(table->buckets[hash] != NULL){
-        Entry *new_entry = table->buckets[hash];
-        while(new_entry != NULL){
-            if(new_entry->value == value){
-                return 1;
-            }
-            new_entry = new_entry->next;
-        }
+int hash_contains_with(HashTable *table, int value, HashFunction hash_function){
+    if(table == NULL || hash_function == NULL){
+        return 0;
     }
+
+    int hash = hash_function(value);
+
+    if(hash < 0 || hash >= TABLE_SIZE){
+        return 0;
+    }
+
+    Entry *current = table->buckets[hash];
+
+    while(current != NULL){
+        if(current->value == value){
+            return 1;
+        }
+
+        current = current->next;
+    }
+
     return 0;
+}
+
+int hash_contains(HashTable *table, int value){
+    return hash_contains_with(table, value, hash_good);
 }
 
 void hash_table_free_collection(HashTable *table){

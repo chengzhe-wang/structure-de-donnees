@@ -57,18 +57,23 @@ int find(DynamicArray *array, int value){
 }
 
 int get(DynamicArray *array, int index){
-    if(index >= array->size){
+    if(array == NULL || index < 0 || index >= array->size){
         return -1;
     }
     return array->data[index];
 }
 
 void remove_front(DynamicArray *array){
+    if(array == NULL || array->size == 0){
+        return;
+    }
+
     for(int i = 0; i < array->size - 1; i++){
         array->data[i] = array->data[i+1];
     }
-    array->data[array->size] = 0;
+
     array->size--;
+    array->data[array->size] = 0;
 }
 
 void free_collection(DynamicArray *array)

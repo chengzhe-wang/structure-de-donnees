@@ -37,6 +37,7 @@ int main(void)
 
     printf("\nValeur find trouvée à la position : %d\n", find(&array, 2));
     printf("La valeur get trouvée est : %d\n", get(&array, 1));
+    printf("Get avec indice négatif : %d (attendu : -1)\n", get(&array, -1));
 
     remove_front(&array);
 
@@ -47,6 +48,12 @@ int main(void)
         printf(" %d ", array.data[i]);
     }
     printf("\n");
+
+    while (array.size > 0) {
+        remove_front(&array);
+    }
+    remove_front(&array);
+    printf("Taille après suppression sur tableau vide : %d (attendu : 0)\n", array.size);
 
     free_collection(&array);
 

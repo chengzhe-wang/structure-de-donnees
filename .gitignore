@@ -36,6 +36,11 @@
 *.x86_64
 *.hex
 
+# TP executables
+tp1
+test_dynamic_array
+test_linked_list
+
 # Debug files
 *.dSYM/
 *.su
